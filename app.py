@@ -12,9 +12,9 @@ def get_db():
         user=os.environ.get('MYSQLUSER', 'root'),
         password=os.environ.get('MYSQLPASSWORD', 'Cris132511-'),
         database=os.environ.get('MYSQLDATABASE', 'gestion_estudiantes'),
-        port=int(os.environ.get('MYSQLPORT', 3306))
+        port=int(os.environ.get('MYSQLPORT', 3306)),
+        ssl_disabled=False
     )
-
 # ── INICIO ───────────────────────────────────────────────────────────────────
 @app.route('/')
 def index():
