@@ -2,7 +2,9 @@
 {% block content %}
 <div class="page-header">
     <h1>Cursos</h1>
+    {% if session.rol == 'admin' %}
     <button class="btn" onclick="document.getElementById('modal').style.display='flex'">+ Nuevo Curso</button>
+    {% endif %}
 </div>
 
 <div id="modal" class="modal" style="display:{% if modo %}flex{% else %}none{% endif %}">
@@ -34,9 +36,13 @@
             <td>{{ c.profesor }}</td>
             <td>{{ c.descripcion }}</td>
             <td>
+                {% if session.rol == 'admin' %}
                 <a href="{{ url_for('editar_curso', id=c.id) }}" class="btn btn-sm">Editar</a>
                 <a href="{{ url_for('eliminar_curso', id=c.id) }}" class="btn btn-sm btn-danger"
                    onclick="return confirm('¿Eliminar curso?')">Eliminar</a>
+                   {% else %}
+<span class="text-muted">Solo lectura</span>
+{% endif %}
             </td>
         </tr>
         {% else %}

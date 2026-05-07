@@ -24,7 +24,12 @@
             </select>
             <input type="number" name="nota" placeholder="Nota (1.0 - 7.0)"
                    min="1" max="7" step="0.1" required>
-            <input type="date" name="fecha" required>
+<input type="date" name="fecha" required
+       value="{{ moment().strftime('%Y-%m-%d') if False else '' }}"
+       id="fecha-hoy">
+<script>
+document.getElementById('fecha-hoy').value = new Date().toISOString().split('T')[0];
+</script>
             <div class="form-buttons">
                 <button type="submit" class="btn">Guardar</button>
                 <button type="button" class="btn btn-cancel"
@@ -76,7 +81,7 @@
 <h2>Registro de Notas</h2>
 <table>
     <thead>
-        <tr><th>Alumno</th><th>Curso</th><th>Nota</th><th>Fecha</th><th>Acciones</th></tr>
+<tr><th>Alumno</th><th>Curso</th><th>Nota</th><th>Fecha</th><th>Registrado por</th><th>Modificado por</th><th>Acciones</th></tr>
     </thead>
     <tbody>
         {% for n in notas %}
@@ -85,10 +90,12 @@
             <td>{{ n.curso }}</td>
             <td><span class="nota {{ 'aprobado' if n.nota >= 4.0 else 'reprobado' }}">{{ n.nota }}</span></td>
             <td>{{ n.fecha }}</td>
+            <td>{{ n.registrado_por or '-' }}</td>
+<td>{{ n.modificado_por or '-' }}</td>
             <td>
-                <a href="{{ url_for('editar_nota', id=n.id) }}" class="btn btn-sm">Editar</a>
-                <a href="{{ url_for('eliminar_nota', id=n.id) }}" class="btn btn-sm btn-danger"
-                   onclick="return confirm('¿Eliminar esta nota?')">Eliminar</a>
+<a href="{{ url_for('editar_nota', id=n.id) }}" class="btn btn-sm">Editar</a>
+    <a href="{{ url_for('eliminar_nota', id=n.id) }}" class="btn btn-sm btn-danger"
+       onclick="return confirm('¿Eliminar esta nota?')">Eliminar</a>
             </td>
         </tr>
         {% else %}

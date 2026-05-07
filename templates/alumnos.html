@@ -2,7 +2,9 @@
 {% block content %}
 <div class="page-header">
     <h1>Alumnos</h1>
+    {% if session.rol == 'admin' %}
     <button class="btn" onclick="document.getElementById('modal').style.display='flex'">+ Nuevo Alumno</button>
+    {% endif %}
 </div>
 
 <!-- Modal para agregar/editar -->
@@ -38,9 +40,13 @@
             <td>{{ a.email }}</td>
             <td>{{ a.fecha_nacimiento }}</td>
             <td>
+                {% if session.rol == 'admin' %}
                 <a href="{{ url_for('editar_alumno', id=a.id) }}" class="btn btn-sm">Editar</a>
                 <a href="{{ url_for('eliminar_alumno', id=a.id) }}" class="btn btn-sm btn-danger"
                    onclick="return confirm('¿Eliminar alumno?')">Eliminar</a>
+                   {% else %}
+<span class="text-muted">Solo lectura</span>
+{% endif %}
             </td>
         </tr>
         {% else %}

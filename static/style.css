@@ -76,3 +76,22 @@ tr:hover td { background: #f8f9fa; }
 .nota { padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: bold; }
 .aprobado { background: #d5f5e3; color: #1e8449; }
 .reprobado { background: #fadbd8; color: #c0392b; }
+/* Login */
+.login-body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #2c3e50; }
+.login-container { width: 100%; max-width: 420px; padding: 1rem; }
+.login-card { background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.login-card h1 { text-align: center; color: #2c3e50; margin-bottom: 0.5rem; font-size: 1.5rem; }
+.login-card h2 { text-align: center; color: #777; font-size: 1rem; margin-bottom: 1.5rem; font-weight: normal; }
+.login-card label { display: block; margin-bottom: 0.3rem; font-weight: bold; color: #555; font-size: 0.9rem; }
+.login-card select, .login-card input { width: 100%; padding: 0.7rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; }
+.btn-login { width: 100%; padding: 0.8rem; font-size: 1rem; margin-top: 0.5rem; }
+
+/* Nav usuario */
+.nav-user { display: flex; align-items: center; gap: 1rem; }
+.user-badge { color: white; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+.rol-tag { background: #3498db; padding: 0.1rem 0.5rem; border-radius: 10px; font-size: 0.75rem; }
+.rol-tag.admin { background: #e74c3c; }
+.btn-logout { background: transparent; border: 1px solid white; color: white; padding: 0.3rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+.btn-logout:hover { background: rgba(255,255,255,0.2); }
+.text-muted { color: #aaa; font-size: 0.85rem; }
+.alert-danger { background: #fadbd8; color: #c0392b; padding: 0.8rem 1.2rem; border-radius: 6px; margin-bottom: 1rem; }

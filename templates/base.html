@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Estudiantes</title>
+    <title>Gestion de Estudiantes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav>
-        <div class="nav-brand">🎓 GestióN Estudiantil</div>
+        <div class="nav-brand">🎓 Gestion Estudiantil</div>
         <div class="nav-links">
             <a href="{{ url_for('index') }}">Inicio</a>
             <a href="{{ url_for('alumnos') }}">Alumnos</a>
             <a href="{{ url_for('cursos') }}">Cursos</a>
             <a href="{{ url_for('notas') }}">Notas</a>
+        </div>
+        <div class="nav-user">
+            {% if session.nombre %}
+            <span class="user-badge {{ session.rol }}">
+                👤 {{ session.nombre }}
+                <span class="rol-tag">{{ session.rol }}</span>
+            </span>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar sesion</a>
+            {% endif %}
         </div>
     </nav>
     <main>
