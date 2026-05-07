@@ -7,7 +7,7 @@ app.secret_key = 'clave_secreta_123'
 
 # ── Conexión a la base de datos ──────────────────────────────────────────────
 def get_db():
-    return mysql.connector.connect(
+    conn = mysql.connector.connect(
         host=os.environ.get('MYSQLHOST', 'localhost'),
         user=os.environ.get('MYSQLUSER', 'root'),
         password=os.environ.get('MYSQLPASSWORD', 'Cris132511-'),
@@ -15,6 +15,11 @@ def get_db():
         port=int(os.environ.get('MYSQLPORT', 3306)),
         ssl_disabled=False
     )
+    cursor = conn.cursor()
+    cursor.execute("SET time_zone = '-04:00'")  # Hora Chile
+    cursor.close()
+    return conn
+
 # ── INICIO ───────────────────────────────────────────────────────────────────
 @app.route('/')
 def index():
@@ -173,7 +178,6 @@ def editar_nota(id):
         db.commit(); cursor.close(); db.close()
         flash('Nota actualizada correctamente', 'success')
         return redirect(url_for('notas'))
-    # GET: cargar datos actuales de la nota
     cursor.execute("""
         SELECT n.*, CONCAT(a.nombre,' ',a.apellido) as alumno_nombre,
                c.nombre as curso_nombre
