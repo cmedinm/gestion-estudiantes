@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+    <h1>Notas</h1>
+    <button class="btn" onclick="document.getElementById('modal-nuevo').style.display='flex'">+ Nueva Nota</button>
+</div>
+
+<!-- Modal: Nueva Nota -->
+<div id="modal-nuevo" class="modal" style="display:none">
+    <div class="modal-content">
+        <h2>Registrar Nota</h2>
+        <form method="POST" action="{{ url_for('nueva_nota') }}">
+            <select name="alumno_id" required>
+                <option value="">-- Seleccionar Alumno --</option>
+                {% for a in alumnos %}
+                <option value="{{ a.id }}">{{ a.nombre }} {{ a.apellido }}</option>
+                {% endfor %}
+            </select>
+            <select name="curso_id" required>
+                <option value="">-- Seleccionar Curso --</option>
+                {% for c in cursos %}
+                <option value="{{ c.id }}">{{ c.nombre }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="nota" placeholder="Nota (1.0 - 7.0)"
+                   min="1" max="7" step="0.1" required>
+            <input type="date" name="fecha" required>
+            <div class="form-buttons">
+                <button type="submit" class="btn">Guardar</button>
+                <button type="button" class="btn btn-cancel"
+                        onclick="document.getElementById('modal-nuevo').style.display='none'">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Editar Nota -->
+<div id="modal-editar" class="modal" style="display:{% if modo == 'editar' %}flex{% else %}none{% endif %}">
+    <div class="modal-content">
+        <h2>Editar Nota</h2>
+        {% if nota_editar %}
+        <form method="POST" action="{{ url_for('editar_nota', id=nota_editar.id) }}">
+            <label>Alumno</label>
+            <select name="alumno_id" required>
+                {% for a in alumnos %}
+                <option value="{{ a.id }}"
+                    {% if a.id == nota_editar.alumno_id %}selected{% endif %}>
+                    {{ a.nombre }} {{ a.apellido }}
+                </option>
+                {% endfor %}
+            </select>
+            <label>Curso</label>
+            <select name="curso_id" required>
+                {% for c in cursos %}
+                <option value="{{ c.id }}"
+                    {% if c.id == nota_editar.curso_id %}selected{% endif %}>
+                    {{ c.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+            <label>Nota (1.0 - 7.0)</label>
+            <input type="number" name="nota" min="1" max="7" step="0.1"
+                   value="{{ nota_editar.nota }}" required>
+            <label>Fecha</label>
+            <input type="date" name="fecha" value="{{ nota_editar.fecha }}" required>
+            <div class="form-buttons">
+                <button type="submit" class="btn">Actualizar</button>
+                <a href="{{ url_for('notas') }}" class="btn btn-cancel">Cancelar</a>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Tabla de Notas -->
+<h2>Registro de Notas</h2>
+<table>
+    <thead>
+        <tr><th>Alumno</th><th>Curso</th><th>Nota</th><th>Fecha</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for n in notas %}
+        <tr>
+            <td>{{ n.alumno }}</td>
+            <td>{{ n.curso }}</td>
+            <td><span class="nota {{ 'aprobado' if n.nota >= 4.0 else 'reprobado' }}">{{ n.nota }}</span></td>
+            <td>{{ n.fecha }}</td>
+            <td>
+                <a href="{{ url_for('editar_nota', id=n.id) }}" class="btn btn-sm">Editar</a>
+                <a href="{{ url_for('eliminar_nota', id=n.id) }}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('¿Eliminar esta nota?')">Eliminar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No hay notas registradas</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Tabla de Promedios -->
+<h2 style="margin-top:2rem">Promedios por Alumno</h2>
+<table>
+    <thead><tr><th>Alumno</th><th>Promedio</th></tr></thead>
+    <tbody>
+        {% for p in promedios %}
+        <tr>
+            <td>{{ p.alumno }}</td>
+            <td><span class="nota {{ 'aprobado' if p.promedio >= 4.0 else 'reprobado' }}">{{ p.promedio }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2">Sin promedios disponibles</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

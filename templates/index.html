@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Panel de Control</h1>
+<div class="cards">
+    <div class="card">
+        <h2>{{ total_alumnos }}</h2>
+        <p>Alumnos Registrados</p>
+        <a href="{{ url_for('alumnos') }}" class="btn">Ver Alumnos</a>
+    </div>
+    <div class="card">
+        <h2>{{ total_cursos }}</h2>
+        <p>Cursos Disponibles</p>
+        <a href="{{ url_for('cursos') }}" class="btn">Ver Cursos</a>
+    </div>
+    <div class="card">
+        <h2>{{ total_notas }}</h2>
+        <p>Notas Registradas</p>
+        <a href="{{ url_for('notas') }}" class="btn">Ver Notas</a>
+    </div>
+</div>
+{% endblock %}

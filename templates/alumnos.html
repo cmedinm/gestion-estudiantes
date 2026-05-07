@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+    <h1>Alumnos</h1>
+    <button class="btn" onclick="document.getElementById('modal').style.display='flex'">+ Nuevo Alumno</button>
+</div>
+
+<!-- Modal para agregar/editar -->
+<div id="modal" class="modal" style="display:{% if modo %}flex{% else %}none{% endif %}">
+    <div class="modal-content">
+        <h2>{% if modo == 'editar' %}Editar Alumno{% else %}Nuevo Alumno{% endif %}</h2>
+        <form method="POST" action="{% if modo == 'editar' %}{{ url_for('editar_alumno', id=alumno.id) }}{% else %}{{ url_for('nuevo_alumno') }}{% endif %}">
+            <input type="text" name="nombre" placeholder="Nombre" required
+                   value="{{ alumno.nombre if alumno else '' }}">
+            <input type="text" name="apellido" placeholder="Apellido" required
+                   value="{{ alumno.apellido if alumno else '' }}">
+            <input type="email" name="email" placeholder="Email" required
+                   value="{{ alumno.email if alumno else '' }}">
+            <input type="date" name="fecha_nacimiento"
+                   value="{{ alumno.fecha_nacimiento if alumno else '' }}">
+            <div class="form-buttons">
+                <button type="submit" class="btn">Guardar</button>
+                <a href="{{ url_for('alumnos') }}" class="btn btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr><th>ID</th><th>Nombre</th><th>Email</th><th>Fecha Nac.</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for a in alumnos %}
+        <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.nombre }} {{ a.apellido }}</td>
+            <td>{{ a.email }}</td>
+            <td>{{ a.fecha_nacimiento }}</td>
+            <td>
+                <a href="{{ url_for('editar_alumno', id=a.id) }}" class="btn btn-sm">Editar</a>
+                <a href="{{ url_for('eliminar_alumno', id=a.id) }}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('¿Eliminar alumno?')">Eliminar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No hay alumnos registrados</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

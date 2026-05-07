@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+    <h1>Cursos</h1>
+    <button class="btn" onclick="document.getElementById('modal').style.display='flex'">+ Nuevo Curso</button>
+</div>
+
+<div id="modal" class="modal" style="display:{% if modo %}flex{% else %}none{% endif %}">
+    <div class="modal-content">
+        <h2>{% if modo == 'editar' %}Editar Curso{% else %}Nuevo Curso{% endif %}</h2>
+        <form method="POST" action="{% if modo == 'editar' %}{{ url_for('editar_curso', id=curso.id) }}{% else %}{{ url_for('nuevo_curso') }}{% endif %}">
+            <input type="text" name="nombre" placeholder="Nombre del curso" required
+                   value="{{ curso.nombre if curso else '' }}">
+            <input type="text" name="profesor" placeholder="Profesor"
+                   value="{{ curso.profesor if curso else '' }}">
+            <textarea name="descripcion" placeholder="Descripción">{{ curso.descripcion if curso else '' }}</textarea>
+            <div class="form-buttons">
+                <button type="submit" class="btn">Guardar</button>
+                <a href="{{ url_for('cursos') }}" class="btn btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr><th>ID</th><th>Nombre</th><th>Profesor</th><th>Descripción</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for c in cursos %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.profesor }}</td>
+            <td>{{ c.descripcion }}</td>
+            <td>
+                <a href="{{ url_for('editar_curso', id=c.id) }}" class="btn btn-sm">Editar</a>
+                <a href="{{ url_for('eliminar_curso', id=c.id) }}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('¿Eliminar curso?')">Eliminar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No hay cursos registrados</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
